@@ -4,12 +4,9 @@ Centralized import strings and UI profiles for the **xScarlifeUI** World of Warc
 This repository serves as the official source for all import strings used on the xScarlife Gaming website.
 
 All files in this repository are designed to be **fetched live** by the website, ensuring that users always copy the **most up-to-date version** of each profile.
-
-![Game](https://img.shields.io/badge/Game-World%20of%20Warcraft-0a0f1a?style=for-the-badge&logo=battledotnet&logoColor=white)
-![Status](https://img.shields.io/badge/Status-Active%20Maintenance-2ea043?style=for-the-badge)
-![Repo Type](https://img.shields.io/badge/Type-UI%20Import%20Strings-fea82f?style=for-the-badge)
-![Updates](https://img.shields.io/badge/Updates-Automatic%20via%20GitHub-5865F2?style=for-the-badge&logo=github)
-
+![Version](https://img.shields.io/badge/WoW-Retail%20%7C%20Classic-007ACC?style=for-the-badge)
+![UI](https://img.shields.io/badge/UI-ElvUI%20Based-fea82f?style=for-the-badge)
+![Access](https://img.shields.io/badge/Access-Free%20%26%20Public-3fb950?style=for-the-badge)
 
 ---
 
