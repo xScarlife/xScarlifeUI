@@ -1,0 +1,36 @@
+name: Discord Updates
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Post update to Discord
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          REPO: ${{ github.repository }}
+          ACTOR: ${{ github.actor }}
+          REF: ${{ github.ref_name }}
+          COMMIT_MSG: ${{ github.event.head_commit.message }}
+          COMMIT_URL: ${{ github.event.head_commit.url }}
+        run: |
+          payload=$(cat <<'JSON'
+          {
+            "content": "🔔 **xScarlifeUI update pushed**\n\n**Repo:** ${REPO}\n**Branch:** ${REF}\n**By:** ${ACTOR}\n**Commit:** ${COMMIT_MSG}\n${COMMIT_URL}"
+          }
+          JSON
+          )
+          payload=$(echo "$payload" | sed \
+            -e "s|\${REPO}|$REPO|g" \
+            -e "s|\${REF}|$REF|g" \
+            -e "s|\${ACTOR}|$ACTOR|g" \
+            -e "s|\${COMMIT_MSG}|$(echo "$COMMIT_MSG" | sed 's/"/\\"/g')|g" \
+            -e "s|\${COMMIT_URL}|$COMMIT_URL|g")
+
+          curl -H "Content-Type: application/json" \
+               -X POST \
+               -d "$payload" \
+               "$DISCORD_WEBHOOK"
