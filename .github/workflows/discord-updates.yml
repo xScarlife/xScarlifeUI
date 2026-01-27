@@ -16,19 +16,31 @@ jobs:
           REF: ${{ github.ref_name }}
           COMMIT_MSG: ${{ github.event.head_commit.message }}
           COMMIT_URL: ${{ github.event.head_commit.url }}
+          MODIFIED: ${{ join(github.event.head_commit.modified, '\n• ') }}
+          ADDED: ${{ join(github.event.head_commit.added, '\n• ') }}
         run: |
+          files=""
+          if [ -n "$MODIFIED" ]; then
+            files="$files\n• $MODIFIED"
+          fi
+          if [ -n "$ADDED" ]; then
+            files="$files\n• $ADDED"
+          fi
+
           payload=$(cat <<'JSON'
           {
-            "content": "🔔 **xScarlifeUI update pushed**\n\n**Repo:** ${REPO}\n**Branch:** ${REF}\n**By:** ${ACTOR}\n**Commit:** ${COMMIT_MSG}\n${COMMIT_URL}\n\n👉 **Grab the latest import string here:**\nhttps://xscarlife-gaming.com/xscarlifeui-import-strings/"
+            "content": "🔔 **xScarlifeUI update pushed**\n\n**Repo:** ${REPO}\n**Branch:** ${REF}\n**By:** ${ACTOR}\n\n**Commit:** ${COMMIT_MSG}\n${COMMIT_URL}\n\n**Updated file(s):**${FILES}\n\n👉 **Grab the latest import string here:**\nhttps://xscarlife-gaming.com/xscarlifeui-import-strings/"
           }
           JSON
           )
+
           payload=$(echo "$payload" | sed \
             -e "s|\${REPO}|$REPO|g" \
             -e "s|\${REF}|$REF|g" \
             -e "s|\${ACTOR}|$ACTOR|g" \
             -e "s|\${COMMIT_MSG}|$(echo "$COMMIT_MSG" | sed 's/"/\\"/g')|g" \
-            -e "s|\${COMMIT_URL}|$COMMIT_URL|g")
+            -e "s|\${COMMIT_URL}|$COMMIT_URL|g" \
+            -e "s|\${FILES}|$(echo "$files" | sed 's/"/\\"/g')|g")
 
           curl -H "Content-Type: application/json" \
                -X POST \
