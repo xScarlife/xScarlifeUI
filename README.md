@@ -1,8 +1,9 @@
 # xScarlifeUI
-![Game](https://img.shields.io/badge/Game-World%20of%20Warcraft-0a0f1a?style=for-the-badge&logo=battledotnet&logoColor=white)
-![Status](https://img.shields.io/badge/Status-Active%20Maintenance-2ea043?style=for-the-badge)
-![Repo Type](https://img.shields.io/badge/Type-UI%20Import%20Strings-fea82f?style=for-the-badge)
-![Updates](https://img.shields.io/badge/Updates-Automatic%20via%20GitHub-5865F2?style=for-the-badge&logo=github)
+[![Game](https://img.shields.io/badge/Game-World%20of%20Warcraft-0a0f1a?style=for-the-badge&logo=battledotnet&logoColor=white)](https://xscarlife-gaming.com)
+[![Status](https://img.shields.io/badge/Status-Active%20Maintenance-2ea043?style=for-the-badge)](https://github.com/xScarlife/xScarlifeUI/commits/main)
+[![Type](https://img.shields.io/badge/Type-UI%20Import%20Strings-fea82f?style=for-the-badge)](https://github.com/xScarlife/xScarlifeUI)
+[![Updates](https://img.shields.io/badge/Updates-Automatic%20via%20GitHub-5865F2?style=for-the-badge&logo=github)](https://github.com/xScarlife/xScarlifeUI/commits/main)
+[![Discord](https://img.shields.io/badge/Discord-Join%20the%20Community-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/ZVG2Cea)
 
 Centralized import strings and UI profiles for the **xScarlifeUI** World of Warcraft interface.  
 This repository serves as the official source for all import strings used on the xScarlife Gaming website.
