@@ -1,2 +1,46 @@
 # xScarlifeUI
-Official repository containing import strings and profiles for the xScarlifeUI World of Warcraft interface, maintained and updated by xScarlife.
+
+Centralized import strings and UI profiles for the **xScarlifeUI** World of Warcraft interface.  
+This repository serves as the official source for all import strings used on the xScarlife Gaming website.
+
+All files in this repository are designed to be **fetched live** by the website, ensuring that users always copy the **most up-to-date version** of each profile.
+
+---
+
+## 📦 What’s inside
+
+This repository contains plain text (`.txt`) import strings for various World of Warcraft addons, such as:
+
+- ElvUI profiles  
+- WindTools profiles  
+- Blizzard Cooldown Manager profiles  
+- Other UI-related addon imports  
+
+Each file represents **one import string**, maintained and version-controlled via GitHub.
+
+---
+
+## 🔄 How updates work
+
+- Import strings are edited locally and pushed to GitHub
+- The website fetches the raw file directly from this repository
+- Users always copy the **latest version** without manual website updates
+
+No downloads, no outdated strings, no confusion.
+
+---
+
+## 🌐 Usage
+
+These files are **not meant to be downloaded manually**.
+
+They are automatically retrieved by the xScarlife Gaming website when users click the **Copy** button on an import block.
+
+If you are viewing this repository directly, you can inspect the files, but the intended usage is via the website.
+
+---
+
+## 📁 Repository structure
+
+The repository is organized by game version and addon for clarity and future scalability:
+
