@@ -42,5 +42,31 @@ If you are viewing this repository directly, you can inspect the files, but the 
 
 ## 📁 Repository structure
 
-The repository is organized by game version and addon for clarity and future scalability:
+The repository is organized by game version and addon for clarity and future scalability.
+
+
+---
+
+## ⚠️ Important notes
+
+- This repository only contains **import strings**, not addon code
+- No addons are distributed or sold through this repository
+- All content is provided **as-is**, without guarantees
+- Import strings may change as addons or game versions evolve
+
+---
+
+## 🔗 Links
+
+- Website: https://xscarlife-gaming.com  
+- Discord: https://discord.gg/ZVG2Cea  
+
+---
+
+## 🧡 Support
+
+If you enjoy the xScarlifeUI setup and want to support the project, you can do so via the links provided on the website.
+
+Thank you for being part of the community!
+
 
