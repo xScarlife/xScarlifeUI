@@ -3,44 +3,79 @@ name: Discord Updates
 on:
   push:
     branches: ["main"]
+    paths-ignore:
+      - ".github/**"
 
 jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-      - name: Post update to Discord
+      - name: Build changed files list (pretty)
+        id: files
+        run: |
+          MODIFIED='${{ toJson(github.event.head_commit.modified) }}'
+          ADDED='${{ toJson(github.event.head_commit.added) }}'
+
+          # Combine arrays and format as bullet list
+          python - <<'PY'
+          import json, os
+
+          modified = json.loads(os.environ.get("MODIFIED","[]") or "[]")
+          added = json.loads(os.environ.get("ADDED","[]") or "[]")
+          files = list(dict.fromkeys(added + modified))  # dedupe, keep order
+
+          if not files:
+            out = "—"
+          else:
+            # Keep it readable in Discord (trim if huge)
+            max_lines = 12
+            shown = files[:max_lines]
+            out = "\n".join([f"• `{f}`" for f in shown])
+            if len(files) > max_lines:
+              out += f"\n• `…and {len(files)-max_lines} more`"
+
+          # Write output for next step
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
+            f.write(f"list<<EOF\n{out}\nEOF\n")
+          PY
+        env:
+          MODIFIED: ${{ toJson(github.event.head_commit.modified) }}
+          ADDED: ${{ toJson(github.event.head_commit.added) }}
+
+      - name: Post embed to Discord
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-          REPO: ${{ github.repository }}
           ACTOR: ${{ github.actor }}
-          REF: ${{ github.ref_name }}
+          REPO: ${{ github.repository }}
           COMMIT_MSG: ${{ github.event.head_commit.message }}
           COMMIT_URL: ${{ github.event.head_commit.url }}
-          MODIFIED: ${{ join(github.event.head_commit.modified, '\n• ') }}
-          ADDED: ${{ join(github.event.head_commit.added, '\n• ') }}
+          SITE_URL: https://xscarlife-gaming.com/xscarlifeui-import-strings/
+          FILES_LIST: ${{ steps.files.outputs.list }}
         run: |
-          files=""
-          if [ -n "$MODIFIED" ]; then
-            files="$files\n• $MODIFIED"
-          fi
-          if [ -n "$ADDED" ]; then
-            files="$files\n• $ADDED"
-          fi
+          # Escape quotes in commit message for JSON safety
+          SAFE_COMMIT_MSG=$(printf '%s' "$COMMIT_MSG" | sed 's/"/\\"/g')
 
-          payload=$(cat <<'JSON'
+          payload=$(cat <<JSON
           {
-            "content": "🔔 **xScarlifeUI update pushed**\n\n**Repo:** ${REPO}\n**Branch:** ${REF}\n**By:** ${ACTOR}\n\n**Commit:** ${COMMIT_MSG}\n${COMMIT_URL}\n\n**Updated file(s):**${FILES}\n\n👉 **Grab the latest import string here:**\nhttps://xscarlife-gaming.com/xscarlifeui-import-strings/"
+            "username": "xScarlifeUI Updates",
+            "embeds": [
+              {
+                "title": "xScarlifeUI update pushed",
+                "url": "$COMMIT_URL",
+                "description": "**Grab the latest import string:**\\n$SITE_URL",
+                "color": 16689199,
+                "fields": [
+                  { "name": "Repo", "value": "$REPO", "inline": true },
+                  { "name": "By", "value": "$ACTOR", "inline": true },
+                  { "name": "Commit", "value": "$SAFE_COMMIT_MSG", "inline": false },
+                  { "name": "Updated file(s)", "value": "$FILES_LIST", "inline": false }
+                ],
+                "footer": { "text": "xScarlife Gaming" }
+              }
+            ]
           }
-          JSON
+JSON
           )
-
-          payload=$(echo "$payload" | sed \
-            -e "s|\${REPO}|$REPO|g" \
-            -e "s|\${REF}|$REF|g" \
-            -e "s|\${ACTOR}|$ACTOR|g" \
-            -e "s|\${COMMIT_MSG}|$(echo "$COMMIT_MSG" | sed 's/"/\\"/g')|g" \
-            -e "s|\${COMMIT_URL}|$COMMIT_URL|g" \
-            -e "s|\${FILES}|$(echo "$files" | sed 's/"/\\"/g')|g")
 
           curl -H "Content-Type: application/json" \
                -X POST \
