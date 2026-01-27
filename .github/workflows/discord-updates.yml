@@ -19,7 +19,7 @@ jobs:
         run: |
           payload=$(cat <<'JSON'
           {
-            "content": "🔔 **xScarlifeUI update pushed**\n\n**Repo:** ${REPO}\n**Branch:** ${REF}\n**By:** ${ACTOR}\n**Commit:** ${COMMIT_MSG}\n${COMMIT_URL}"
+            "content": "🔔 **xScarlifeUI update pushed**\n\n**Repo:** ${REPO}\n**Branch:** ${REF}\n**By:** ${ACTOR}\n**Commit:** ${COMMIT_MSG}\n${COMMIT_URL}\n\n👉 **Grab the latest import string here:**\nhttps://xscarlife-gaming.com/xscarlifeui-import-strings/"
           }
           JSON
           )
