@@ -4,6 +4,8 @@
 [![Type](https://img.shields.io/badge/Type-UI%20Import%20Strings-fea82f?style=for-the-badge)](https://github.com/xScarlife/xScarlifeUI)
 [![Updates](https://img.shields.io/badge/Updates-Automatic%20via%20GitHub-5865F2?style=for-the-badge&logo=github)](https://github.com/xScarlife/xScarlifeUI/commits/main)
 [![Discord](https://img.shields.io/badge/Discord-Join%20the%20Community-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/ZVG2Cea)
+[![YouTube](https://img.shields.io/badge/YouTube-xScarlife-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/c/xScarlife)
+
 
 Centralized import strings and UI profiles for the **xScarlifeUI** World of Warcraft interface.  
 This repository serves as the official source for all import strings used on the xScarlife Gaming website.
