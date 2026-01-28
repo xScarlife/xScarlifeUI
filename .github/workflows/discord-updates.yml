@@ -7,8 +7,6 @@ on:
     paths:
       - "xScarlifeUI - Retail/**"
       - "xScarlifeUI - Classic Era/**"
-    paths-ignore:
-      - ".github/**"
 
 jobs:
   notify:
