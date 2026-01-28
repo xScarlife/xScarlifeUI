@@ -4,8 +4,8 @@ on:
   push:
     branches: ["main"]
     paths:
-      - "retail/**"
-      - "classic/**"
+      - "xScarlifeUI - Retail/**"
+      - "xScarlifeUI - Classic Era/**"
 
 jobs:
   notify:
