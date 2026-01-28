@@ -3,6 +3,9 @@ name: Discord Updates
 on:
   push:
     branches: ["main"]
+    paths:
+      - "retail/**"
+      - "classic/**"
     paths-ignore:
       - ".github/**"
 
@@ -13,10 +16,6 @@ jobs:
       - name: Build changed files list (pretty)
         id: files
         run: |
-          MODIFIED='${{ toJson(github.event.head_commit.modified) }}'
-          ADDED='${{ toJson(github.event.head_commit.added) }}'
-
-          # Combine arrays and format as bullet list
           python - <<'PY'
           import json, os
 
@@ -27,14 +26,12 @@ jobs:
           if not files:
             out = "—"
           else:
-            # Keep it readable in Discord (trim if huge)
             max_lines = 12
             shown = files[:max_lines]
             out = "\n".join([f"• `{f}`" for f in shown])
             if len(files) > max_lines:
               out += f"\n• `…and {len(files)-max_lines} more`"
 
-          # Write output for next step
           with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
             f.write(f"list<<EOF\n{out}\nEOF\n")
           PY
@@ -52,7 +49,6 @@ jobs:
           SITE_URL: https://xscarlife-gaming.com/xscarlifeui-import-strings/
           FILES_LIST: ${{ steps.files.outputs.list }}
         run: |
-          # Escape quotes in commit message for JSON safety
           SAFE_COMMIT_MSG=$(printf '%s' "$COMMIT_MSG" | sed 's/"/\\"/g')
 
           payload=$(cat <<JSON
@@ -62,7 +58,7 @@ jobs:
               {
                 "title": "xScarlifeUI update pushed",
                 "url": "$COMMIT_URL",
-                "description": "**Grab the latest import string:**\\n$SITE_URL",
+                "description": "👉 **Grab the latest import string here:**\n$SITE_URL",
                 "color": 16689199,
                 "fields": [
                   { "name": "Repo", "value": "$REPO", "inline": true },
