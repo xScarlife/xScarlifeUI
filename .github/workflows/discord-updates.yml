@@ -35,7 +35,6 @@ jobs:
           modified = json.loads(os.environ.get("MODIFIED_JSON","[]") or "[]")
           added = json.loads(os.environ.get("ADDED_JSON","[]") or "[]")
 
-          # Combine + dedupe while keeping order
           files = []
           for f in (added + modified):
             if f not in files:
@@ -70,11 +69,7 @@ jobs:
           }
 
           data = json.dumps(payload).encode("utf-8")
-          req = urllib.request.Request(
-            webhook,
-            data=data,
-            headers={"Content-Type": "application/json"}
-          )
+          req = urllib.request.Request(webhook, data=data, headers={"Content-Type":"application/json"})
           with urllib.request.urlopen(req) as resp:
             resp.read()
           print("Discord notified successfully.")
