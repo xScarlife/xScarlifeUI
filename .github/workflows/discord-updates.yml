@@ -20,9 +20,19 @@ jobs:
           COMMIT_URL: https://github.com/${{ github.repository }}/commit/${{ github.sha }}
           SITE_URL: https://xscarlife-gaming.com/xscarlifeui-import-strings/
         run: |
-          # Build message
-          MSG="🔔 **xScarlifeUI import update**\n\n**Repo:** $REPO\n**By:** $ACTOR\n**Commit:** $COMMIT_MSG\n$COMMIT_URL\n\n👉 Grab the latest import string here:\n$SITE_URL"
-
-          # Send to Discord (jq builds valid JSON)
-          jq -n --arg content "$MSG" '{content: $content}' \
-            | curl -sS -H "Content-Type: application/json" -X POST -d @- "$DISCORD_WEBHOOK"
+          jq -n --arg repo "$REPO" \
+                --arg actor "$ACTOR" \
+                --arg msg "$COMMIT_MSG" \
+                --arg url "$COMMIT_URL" \
+                --arg site "$SITE_URL" \
+                '{
+                  content:
+                    "🔔 **xScarlifeUI import update**\n\n" +
+                    "**Repo:** " + $repo + "\n" +
+                    "**By:** " + $actor + "\n" +
+                    "**Commit:** " + $msg + "\n" +
+                    $url + "\n\n" +
+                    "👉 **Grab the latest import string here:**\n" +
+                    $site
+                }' \
+          | curl -sS -H "Content-Type: application/json" -X POST -d @- "$DISCORD_WEBHOOK"
