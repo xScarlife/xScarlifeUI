@@ -18,7 +18,7 @@ jobs:
           curl -X POST -H "Content-Type: application/json" \
           -d '{
             "username": "xScarlifeUI Updates",
-            "avatar_url": "https://xscarlife-gaming.com/wp-content/uploads/xscarlife-avatar.png",
+            "avatar_url": "https://i.imgur.com/IFQ4Lvc.png",
             "embeds": [
               {
                 "title": "xScarlifeUI update pushed",
