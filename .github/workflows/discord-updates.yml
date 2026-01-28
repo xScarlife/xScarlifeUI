@@ -1,37 +1,34 @@
-name: Import Updates
+name: Repository Updates
 
 on:
   push:
     branches:
       - main
-    paths:
-      - "xScarlifeUI - Retail/**"
-      - "xScarlifeUI - Classic Era/**"
 
 jobs:
   notify:
     runs-on: ubuntu-22.04
     steps:
       - name: Notify Discord
-        if: success()
-        uses: repooc/djs-actions@my_changes
-        with:
-          id: ${{ secrets.DISCORD_WEBHOOK_ID }}
-          token: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
-          title: '🔔 **xScarlifeUI import update**'
-          description: |
-            A new import update has been pushed to **${{ github.event.repository.name }}**.
-
-            **Commit:** ${{ github.event.head_commit.message }}
-            **Commit link:** ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
-
-            👉 **Grab the latest import string here:**
-            https://xscarlife-gaming.com/xscarlifeui-import-strings/
-          fields: |
-            [
-              {"name":"Repo","value":"${{ github.repository }}","inline":true},
-              {"name":"Branch","value":"${{ github.ref_name }}","inline":true},
-              {"name":"Pushed by","value":"${{ github.actor }}","inline":true}
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          COMMIT_MSG: ${{ github.event.head_commit.message }}
+          COMMIT_URL: https://github.com/${{ github.repository }}/commit/${{ github.sha }}
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+          -d '{
+            "username": "xScarlifeUI Updates",
+            "avatar_url": "https://xscarlife-gaming.com/wp-content/uploads/xscarlife-avatar.png",
+            "embeds": [
+              {
+                "title": "xScarlifeUI update pushed",
+                "url": "'"$COMMIT_URL"'",
+                "description": "**Commit:** '"$COMMIT_MSG"'\n\n👉 **Grab the latest import string here:**\nhttps://xscarlife-gaming.com/xscarlifeui-import-strings/",
+                "color": 16753920,
+                "footer": {
+                  "text": "xScarlife Gaming"
+                }
+              }
             ]
-          footer: xScarlife Gaming
-          timestamp: true
+          }' \
+          "$DISCORD_WEBHOOK"
