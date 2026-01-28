@@ -23,7 +23,7 @@ jobs:
               {
                 "title": "xScarlifeUI update pushed",
                 "url": "'"$COMMIT_URL"'",
-                "description": "**Commit:** '"$COMMIT_MSG"'\n\n👉 **Grab the latest import string here:**\nhttps://xscarlife-gaming.com/xscarlifeui-import-strings/",
+                "description": "**Commit:** '"$COMMIT_MSG"'\n\n👉 **Grab the latest import strings here:**\nhttps://xscarlife-gaming.com/xscarlifeui-import-strings/",
                 "color": 16753920,
                 "footer": {
                   "text": "xScarlife Gaming"
