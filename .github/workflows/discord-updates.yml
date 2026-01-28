@@ -1,38 +1,39 @@
-name: Discord Import Updates
+name: Import Updates
 
 on:
   push:
-    branches: ["main"]
+    branches:
+      - main
     paths:
       - "xScarlifeUI - Retail/**"
       - "xScarlifeUI - Classic Era/**"
+    paths-ignore:
+      - ".github/**"
 
 jobs:
   notify:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
-      - name: Send message to Discord
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-          REPO: ${{ github.repository }}
-          ACTOR: ${{ github.actor }}
-          COMMIT_MSG: ${{ github.event.head_commit.message }}
-          COMMIT_URL: https://github.com/${{ github.repository }}/commit/${{ github.sha }}
-          SITE_URL: https://xscarlife-gaming.com/xscarlifeui-import-strings/
-        run: |
-          jq -n --arg repo "$REPO" \
-                --arg actor "$ACTOR" \
-                --arg msg "$COMMIT_MSG" \
-                --arg url "$COMMIT_URL" \
-                --arg site "$SITE_URL" \
-                '{
-                  content:
-                    "🔔 **xScarlifeUI import update**\n\n" +
-                    "**Repo:** " + $repo + "\n" +
-                    "**By:** " + $actor + "\n" +
-                    "**Commit:** " + $msg + "\n" +
-                    $url + "\n\n" +
-                    "👉 **Grab the latest import string here:**\n" +
-                    $site
-                }' \
-          | curl -sS -H "Content-Type: application/json" -X POST -d @- "$DISCORD_WEBHOOK"
+      - name: Notify Discord
+        if: success()
+        uses: repooc/djs-actions@my_changes
+        with:
+          id: ${{ secrets.DISCORD_WEBHOOK_ID }}
+          token: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
+          title: '🔔 **xScarlifeUI import update**'
+          description: |
+            A new import update has been pushed to **${{ github.event.repository.name }}**.
+
+            **Commit:** ${{ github.event.head_commit.message }}
+            **Commit link:** ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
+
+            👉 **Grab the latest import string here:**
+            https://xscarlife-gaming.com/xscarlifeui-import-strings/
+          fields: |
+            [
+              {"name":"Repo","value":"${{ github.repository }}","inline":true},
+              {"name":"Branch","value":"${{ github.ref_name }}","inline":true},
+              {"name":"Pushed by","value":"${{ github.actor }}","inline":true}
+            ]
+          footer: xScarlife Gaming
+          timestamp: true
