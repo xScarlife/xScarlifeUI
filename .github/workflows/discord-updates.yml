@@ -6,39 +6,11 @@ on:
     paths:
       - "retail/**"
       - "classic/**"
-    paths-ignore:
-      - ".github/**"
 
 jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-      - name: Build changed files list (pretty)
-        id: files
-        run: |
-          python - <<'PY'
-          import json, os
-
-          modified = json.loads(os.environ.get("MODIFIED","[]") or "[]")
-          added = json.loads(os.environ.get("ADDED","[]") or "[]")
-          files = list(dict.fromkeys(added + modified))  # dedupe, keep order
-
-          if not files:
-            out = "—"
-          else:
-            max_lines = 12
-            shown = files[:max_lines]
-            out = "\n".join([f"• `{f}`" for f in shown])
-            if len(files) > max_lines:
-              out += f"\n• `…and {len(files)-max_lines} more`"
-
-          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
-            f.write(f"list<<EOF\n{out}\nEOF\n")
-          PY
-        env:
-          MODIFIED: ${{ toJson(github.event.head_commit.modified) }}
-          ADDED: ${{ toJson(github.event.head_commit.added) }}
-
       - name: Post embed to Discord
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
@@ -47,33 +19,63 @@ jobs:
           COMMIT_MSG: ${{ github.event.head_commit.message }}
           COMMIT_URL: ${{ github.event.head_commit.url }}
           SITE_URL: https://xscarlife-gaming.com/xscarlifeui-import-strings/
-          FILES_LIST: ${{ steps.files.outputs.list }}
+          MODIFIED_JSON: ${{ toJson(github.event.head_commit.modified) }}
+          ADDED_JSON: ${{ toJson(github.event.head_commit.added) }}
         run: |
-          SAFE_COMMIT_MSG=$(printf '%s' "$COMMIT_MSG" | sed 's/"/\\"/g')
+          python3 - <<'PY'
+          import os, json, urllib.request
 
-          payload=$(cat <<JSON
-          {
+          webhook = os.environ["DISCORD_WEBHOOK"]
+          actor = os.environ.get("ACTOR","")
+          repo = os.environ.get("REPO","")
+          commit_msg = os.environ.get("COMMIT_MSG","")
+          commit_url = os.environ.get("COMMIT_URL","")
+          site_url = os.environ.get("SITE_URL","")
+
+          modified = json.loads(os.environ.get("MODIFIED_JSON","[]") or "[]")
+          added = json.loads(os.environ.get("ADDED_JSON","[]") or "[]")
+
+          # Combine + dedupe while keeping order
+          files = []
+          for f in (added + modified):
+            if f not in files:
+              files.append(f)
+
+          if not files:
+            files_list = "—"
+          else:
+            max_lines = 12
+            shown = files[:max_lines]
+            files_list = "\n".join([f"• `{f}`" for f in shown])
+            if len(files) > max_lines:
+              files_list += f"\n• `…and {len(files)-max_lines} more`"
+
+          payload = {
             "username": "xScarlifeUI Updates",
             "embeds": [
               {
                 "title": "xScarlifeUI update pushed",
-                "url": "$COMMIT_URL",
-                "description": "👉 **Grab the latest import string here:**\n$SITE_URL",
+                "url": commit_url,
+                "description": f"👉 **Grab the latest import string here:**\n{site_url}",
                 "color": 16689199,
                 "fields": [
-                  { "name": "Repo", "value": "$REPO", "inline": true },
-                  { "name": "By", "value": "$ACTOR", "inline": true },
-                  { "name": "Commit", "value": "$SAFE_COMMIT_MSG", "inline": false },
-                  { "name": "Updated file(s)", "value": "$FILES_LIST", "inline": false }
+                  {"name": "Repo", "value": repo, "inline": True},
+                  {"name": "By", "value": actor, "inline": True},
+                  {"name": "Commit", "value": commit_msg, "inline": False},
+                  {"name": "Updated file(s)", "value": files_list, "inline": False},
                 ],
-                "footer": { "text": "xScarlife Gaming" }
+                "footer": {"text": "xScarlife Gaming"},
               }
-            ]
+            ],
           }
-JSON
-          )
 
-          curl -H "Content-Type: application/json" \
-               -X POST \
-               -d "$payload" \
-               "$DISCORD_WEBHOOK"
+          data = json.dumps(payload).encode("utf-8")
+          req = urllib.request.Request(
+            webhook,
+            data=data,
+            headers={"Content-Type": "application/json"}
+          )
+          with urllib.request.urlopen(req) as resp:
+            resp.read()
+          print("Discord notified successfully.")
+          PY
