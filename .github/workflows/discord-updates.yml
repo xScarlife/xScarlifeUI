@@ -1,4 +1,4 @@
-name: Discord Updates
+name: Discord Import Updates
 
 on:
   push:
@@ -11,90 +11,18 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
-
-      - name: Collect changed files
-        id: changes
-        run: |
-          # Get files changed between the last two commits
-          files=$(git diff --name-only HEAD~1 HEAD || true)
-
-          if [ -z "$files" ]; then
-            echo "list=—" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          # Format as Discord-friendly bullet list with backticks
-          out=""
-          count=0
-          max=12
-
-          while IFS= read -r line; do
-            [ -z "$line" ] && continue
-            count=$((count+1))
-            if [ "$count" -le "$max" ]; then
-              out="${out}• \`${line}\`\n"
-            fi
-          done <<EOF
-          $files
-          EOF
-
-          if [ "$count" -gt "$max" ]; then
-            more=$((count-max))
-            out="${out}• \`…and ${more} more\`\n"
-          fi
-
-          # Multi-line output
-          echo "list<<EOF" >> "$GITHUB_OUTPUT"
-          printf "%b" "$out" >> "$GITHUB_OUTPUT"
-          echo "EOF" >> "$GITHUB_OUTPUT"
-
-      - name: Post embed to Discord
+      - name: Send message to Discord
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-          ACTOR: ${{ github.actor }}
           REPO: ${{ github.repository }}
+          ACTOR: ${{ github.actor }}
           COMMIT_MSG: ${{ github.event.head_commit.message }}
           COMMIT_URL: https://github.com/${{ github.repository }}/commit/${{ github.sha }}
           SITE_URL: https://xscarlife-gaming.com/xscarlifeui-import-strings/
-          FILES_LIST: ${{ steps.changes.outputs.list }}
         run: |
-          python3 - <<'PY'
-          import os, json, urllib.request
+          # Build message
+          MSG="🔔 **xScarlifeUI import update**\n\n**Repo:** $REPO\n**By:** $ACTOR\n**Commit:** $COMMIT_MSG\n$COMMIT_URL\n\n👉 Grab the latest import string here:\n$SITE_URL"
 
-          webhook = os.environ["DISCORD_WEBHOOK"]
-          actor = os.environ.get("ACTOR","")
-          repo = os.environ.get("REPO","")
-          commit_msg = os.environ.get("COMMIT_MSG") or "(no commit message)"
-          commit_url = os.environ.get("COMMIT_URL","")
-          site_url = os.environ.get("SITE_URL","")
-          files_list = os.environ.get("FILES_LIST","—")
-
-          payload = {
-            "username": "xScarlifeUI Updates",
-            "embeds": [
-              {
-                "title": "xScarlifeUI update pushed",
-                "url": commit_url,
-                "description": f"👉 **Grab the latest import string here:**\n{site_url}",
-                "color": 16689199,
-                "fields": [
-                  {"name": "Repo", "value": repo, "inline": True},
-                  {"name": "By", "value": actor, "inline": True},
-                  {"name": "Commit", "value": commit_msg, "inline": False},
-                  {"name": "Updated file(s)", "value": files_list, "inline": False},
-                ],
-                "footer": {"text": "xScarlife Gaming"},
-              }
-            ],
-          }
-
-          data = json.dumps(payload).encode("utf-8")
-          req = urllib.request.Request(webhook, data=data, headers={"Content-Type":"application/json"})
-          with urllib.request.urlopen(req) as resp:
-            resp.read()
-          print("Discord notified successfully.")
-          PY
+          # Send to Discord (jq builds valid JSON)
+          jq -n --arg content "$MSG" '{content: $content}' \
+            | curl -sS -H "Content-Type: application/json" -X POST -d @- "$DISCORD_WEBHOOK"
