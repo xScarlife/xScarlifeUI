@@ -5,27 +5,18 @@ Each update reflects improvements, fixes, or adjustments to the UI import string
 
 ---
 
-## 📅 2026-01-30
+## 📅 2026-01-31
 ### ✨ Changed
-- Changed all fonts back to Expressway
-- Changed Combat Font to "Montserrat"
-- Changed target group text format
-- Changed player target text format 
-- Changed size of the party frames
-- Changed size of the party target frames 
-- Changed Details Damage Meter layout
-- Changed BigWigs text size and positioning
+- Changed the private auras positioning for assist frames
+- Changed the private auras positioning for party frame 
+- Changed the private auras positioning for the raid frames 
+- Changed the private auras positioning for the tank frames 
 
 
 ---
 
-## 📅 2026-01-30
+## 📅 2026-01-31
 ### ➕ Added
-- Added health text to pet frame
-- Added health text to party target frames
-- Added debuff icon to arena frame 
-- Added debuff icon to assist frames 
-- Added debuff icon to party frames
-- Added debuff icon to the tank frames
-
+- Added debuff icons for raid frames 
+- Added private auras for raid frames 
 
