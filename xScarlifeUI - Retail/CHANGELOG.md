@@ -5,23 +5,25 @@ Each update reflects improvements, fixes, or adjustments to the UI import string
 
 ---
 
-## 📅 2026-02-05
+## 📅 2026-02-07
 ### ✨ Changed
-• Changed target group width size for MT Frames
-• Changed target group width size for MA Frames 
-• Changed BigWigs bar size 
+• Changed text tag for target frame 
+• Changed party frames positioning 
+• Changed loot alert frame positioning
+• Changed bank frame size
+• Changed warkbank frame size 
+• Changed guild bank item count font
+
 ---
 
-## 📅 2026-02-05
+## 📅 2026-02-07
 ### ➕ Added
-• Added debuff icons for raid frames 
-• Added private auras for raid frames
+• Added debuff icon on player frame 
+• Added target buffs on target frame 
 
 ---
 
-## 📅 2026-02-05
+## 📅 2026-02-07
 ### ✨ Removed
-• Removed private aura's for raid 1
-• Removed private aura's for raid 2
-• Removed private aura's for raid 3
+/
 
