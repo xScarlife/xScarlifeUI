@@ -5,25 +5,20 @@ Each update reflects improvements, fixes, or adjustments to the UI import string
 
 ---
 
-## 📅 2026-02-07
+## 📅 2026-02-13
 ### ✨ Changed
-• Changed text tag for target frame 
-• Changed party frames positioning 
-• Changed loot alert frame positioning
-• Changed bank frame size
-• Changed warkbank frame size 
-• Changed guild bank item count font
+• Changed Bigwigs Emphasized bars
+
 
 ---
 
-## 📅 2026-02-07
+## 📅 2026-02-13
 ### ➕ Added
-• Added debuff icon on player frame 
-• Added target buffs on target frame 
+/ 
 
 ---
 
-## 📅 2026-02-07
+## 📅 2026-02-13
 ### ✨ Removed
 /
 
