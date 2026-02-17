@@ -5,20 +5,20 @@ Each update reflects improvements, fixes, or adjustments to the UI import string
 
 ---
 
-## 📅 2026-02-13
+## 📅 2026-02-17
 ### ✨ Changed
-• Changed Bigwigs Emphasized bars
+• Enabled BigWigs "Show the Blizzard victory message" option (Thanks to Cellozzz)
 
 
 ---
 
-## 📅 2026-02-13
+## 📅 2026-02-17
 ### ➕ Added
 / 
 
 ---
 
-## 📅 2026-02-13
+## 📅 2026-02-17
 ### ✨ Removed
 /
 
