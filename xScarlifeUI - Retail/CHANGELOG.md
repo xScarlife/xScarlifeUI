@@ -5,20 +5,21 @@ Each update reflects improvements, fixes, or adjustments to the UI import string
 
 ---
 
-## 📅 2026-02-17
+## 📅 2026-02-19
 ### ✨ Changed
-• Enabled BigWigs "Show the Blizzard victory message" option (Thanks to Cellozzz)
+• Changed the Cooldown Manager Centered profile
+• Changed the Sensei Class Resource Bar profile
 
 
 ---
 
-## 📅 2026-02-17
+## 📅 2026-02-19
 ### ➕ Added
 / 
 
 ---
 
-## 📅 2026-02-17
+## 📅 2026-02-19
 ### ✨ Removed
 /
 
