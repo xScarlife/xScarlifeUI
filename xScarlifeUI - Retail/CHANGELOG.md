@@ -5,21 +5,20 @@ Each update reflects improvements, fixes, or adjustments to the UI import string
 
 ---
 
-## 📅 2026-02-19
+## 📅 2026-02-22
 ### ✨ Changed
-• Changed the Cooldown Manager Centered profile
-• Changed the Sensei Class Resource Bar profile
+• Chaned the debuff position slightly.
 
 
 ---
 
-## 📅 2026-02-19
+## 📅 2026-02-22
 ### ➕ Added
 / 
 
 ---
 
-## 📅 2026-02-19
+## 📅 2026-02-22
 ### ✨ Removed
 /
 
