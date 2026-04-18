@@ -5,20 +5,21 @@ Each update reflects improvements, fixes, or adjustments to the UI import string
 
 ---
 
-## 📅 2026-03-31
-### ✨ Changed
-• /
+#Added 18/04/2026
 
+Enabled TargetTarget frame
+Added custom text to TargetTarget frame
+Enabled targeting sound
 
----
+#Updated 18/04/2026
 
-## 📅 2026-03-31
-### ➕ Added
-• Added the absorb shield and coloring for individual frames.
+Changed max overflow percentage on player frame
+Changed party auras style to a textured icon
+Adjusted party auras size
 
----
+#Improved 18/04/2026
 
-## 📅 2026-03-31
-### ✨ Removed
-/
+Enabled buffs on boss frames
+Enabled player filters next to target frame
+
 
