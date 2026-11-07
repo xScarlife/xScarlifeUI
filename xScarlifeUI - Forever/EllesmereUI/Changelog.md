@@ -19,3 +19,4 @@ BigWigs
 
 Blizzard Edit Mode
 - Increased micro menu size. 
+- Increased group finder icon size. 
